@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("appointment")
+@RequestMapping("appointments")
 public class AppointmentController {
 
     @Autowired
@@ -38,5 +38,15 @@ public class AppointmentController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         appointmentService.delete(id);
+    }
+
+    @GetMapping("historic")
+    public List<AppointmentResponse> getCompletedAppointments(){
+        return appointmentService.getCompletedAppointments();
+    }
+
+    @PutMapping("/{id}/completed")
+    public AppointmentResponse markAsCompleted(@PathVariable Long id){
+        return appointmentService.markAsCompleted(id);
     }
 }

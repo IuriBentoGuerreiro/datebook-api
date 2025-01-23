@@ -18,6 +18,7 @@ public class AppointmentResponse {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Boolean status;
 
     public static AppointmentResponse convert(Appointment appointment){
         return AppointmentResponse.builder()
@@ -25,6 +26,7 @@ public class AppointmentResponse {
                 .description(appointment.getDescription())
                 .startDate(appointment.getStartDate())
                 .endDate(appointment.getEndDate())
+                .status(appointment.getStatus())
                 .build();
     }
 }

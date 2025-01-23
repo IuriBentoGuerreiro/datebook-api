@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,7 +19,13 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     public AppointmentResponse saveAppointment(AppointmentRequest appointmentRequest){
-        return AppointmentResponse.convert(appointmentRepository.save(Appointment.convert(appointmentRequest)));
+        Appointment appointment = new Appointment();
+        appointment.setDescription(appointmentRequest.getDescription());
+        appointment.setStartDate(LocalDate.now());
+        appointment.setEndDate(appointmentRequest.getEndDate());
+        appointment.setStatus(false);
+
+        return AppointmentResponse.convert(appointmentRepository.save(appointment));
     }
 
     public Appointment getById(Long id){
@@ -41,5 +48,18 @@ public class AppointmentService {
     public void delete(Long id){
         var appointment = getById(id);
         appointmentRepository.delete(appointment);
+    }
+
+    public List<AppointmentResponse> getCompletedAppointments(){
+        return appointmentRepository.findByStatus(true).stream()
+                .map(AppointmentResponse::convert).toList();
+    }
+
+    public AppointmentResponse markAsCompleted(Long id){
+        var appointment = getById(id);
+        appointment.setStatus(true);
+        appointment.setEndDate(LocalDate.now());
+        appointmentRepository.save(appointment);
+        return AppointmentResponse.convert(appointment);
     }
 }
