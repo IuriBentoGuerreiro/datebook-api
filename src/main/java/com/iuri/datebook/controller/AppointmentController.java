@@ -40,9 +40,14 @@ public class AppointmentController {
         appointmentService.delete(id);
     }
 
-    @GetMapping("historic")
+    @GetMapping("completed")
     public List<AppointmentResponse> getCompletedAppointments(){
         return appointmentService.getCompletedAppointments();
+    }
+
+    @GetMapping("pending")
+    public List<AppointmentResponse> getPendingAppointmens(){
+        return appointmentService.getPendingAppointments();
     }
 
     @PutMapping("/{id}/completed")

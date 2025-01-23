@@ -62,4 +62,9 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
         return AppointmentResponse.convert(appointment);
     }
+
+    public List<AppointmentResponse> getPendingAppointments(){
+        return appointmentRepository.findByStatus(false).stream()
+                .map(AppointmentResponse::convert).toList();
+    }
 }
