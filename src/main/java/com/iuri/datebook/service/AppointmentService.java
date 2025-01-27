@@ -7,10 +7,11 @@ import com.iuri.datebook.repository.AppointmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -34,9 +35,8 @@ public class AppointmentService {
         );
     }
 
-    public List<AppointmentResponse> listAll(){
-        return appointmentRepository.findAll().stream()
-                .map(AppointmentResponse::convert).toList();
+    public Page<Appointment> getAllAppointments(Pageable pageable) {
+        return appointmentRepository.findAll(pageable);
     }
 
     public Appointment update(Long id, AppointmentRequest appointmentRequest){
@@ -50,9 +50,8 @@ public class AppointmentService {
         appointmentRepository.delete(appointment);
     }
 
-    public List<AppointmentResponse> getCompletedAppointments(){
-        return appointmentRepository.findByStatus(true).stream()
-                .map(AppointmentResponse::convert).toList();
+    public Page<Appointment> getCompletedAppointments(Pageable pageable){
+        return appointmentRepository.findByStatus(true, pageable);
     }
 
     public AppointmentResponse markAsCompleted(Long id){
@@ -63,8 +62,7 @@ public class AppointmentService {
         return AppointmentResponse.convert(appointment);
     }
 
-    public List<AppointmentResponse> getPendingAppointments(){
-        return appointmentRepository.findByStatus(false).stream()
-                .map(AppointmentResponse::convert).toList();
+    public Page<Appointment> getPendingAppointments(Pageable pageable){
+        return appointmentRepository.findByStatus(false, pageable);
     }
 }

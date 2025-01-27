@@ -2,11 +2,12 @@ package com.iuri.datebook.controller;
 
 import com.iuri.datebook.dto.AppointmentRequest;
 import com.iuri.datebook.dto.AppointmentResponse;
+import com.iuri.datebook.model.Appointment;
 import com.iuri.datebook.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("appointments")
@@ -26,8 +27,8 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<AppointmentResponse> listAll(){
-        return appointmentService.listAll();
+    public Page<Appointment> getAllAppointments(Pageable pageable){
+        return appointmentService.getAllAppointments(pageable);
     }
 
     @PutMapping("/{id}")
@@ -40,14 +41,14 @@ public class AppointmentController {
         appointmentService.delete(id);
     }
 
-    @GetMapping("completed")
-    public List<AppointmentResponse> getCompletedAppointments(){
-        return appointmentService.getCompletedAppointments();
+    @GetMapping("/completed")
+    public Page<Appointment> getCompletedAppointments(Pageable pageable){
+        return appointmentService.getCompletedAppointments(pageable);
     }
 
-    @GetMapping("pending")
-    public List<AppointmentResponse> getPendingAppointmens(){
-        return appointmentService.getPendingAppointments();
+    @GetMapping("/pending")
+    public Page<Appointment> getPendingAppointmens(Pageable pageable){
+        return appointmentService.getPendingAppointments(pageable);
     }
 
     @PutMapping("/{id}/completed")
