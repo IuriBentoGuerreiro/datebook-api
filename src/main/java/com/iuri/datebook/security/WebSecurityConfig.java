@@ -38,7 +38,9 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF
                 .authorizeHttpRequests(authz -> authz
-                        .anyRequest().authenticated() // Exige autenticação para todas as outras
+                        .requestMatchers("api/auth/register").permitAll()
+                        .requestMatchers("api/auth/login").permitAll()
+                        .anyRequest().authenticated()// Exige autenticação para todas as outras
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) ->
