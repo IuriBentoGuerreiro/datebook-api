@@ -4,6 +4,7 @@ import com.iuri.datebook.utils.JwtRequestFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,8 +39,12 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("api/auth/register").permitAll()
-                        .requestMatchers("api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/appointments").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/appointments/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/appointments/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/appointments/**").permitAll()
                         .anyRequest().authenticated()// Exige autenticação para todas as outras
                 )
                 .exceptionHandling(exceptions -> exceptions
