@@ -41,10 +41,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST,"api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/appointments").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/appointments/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/appointments/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/appointments/**").permitAll()
                         .anyRequest().authenticated()// Exige autenticação para todas as outras
                 )
                 .exceptionHandling(exceptions -> exceptions
