@@ -64,6 +64,6 @@ public class AuthController {
     @GetMapping("/check-username")
     public ResponseEntity<?> checkUsername(@RequestParam String username){
         boolean exists = userService.checkUsername(username);
-        return ResponseEntity.ok(Map.of("exists: ",exists));
+        return ResponseEntity.ok(Map.of("exists:",exists));
     }
 }
