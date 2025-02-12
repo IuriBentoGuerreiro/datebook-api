@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -57,5 +59,11 @@ public class AuthController {
     public ResponseEntity<?> assignRoleToUser(@RequestParam String username, @RequestParam String roleName) {
         User user = userService.assignRoleToUser(username, roleName);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<?> checkUsername(@RequestParam String username){
+        boolean exists = userService.checkUsername(username);
+        return ResponseEntity.ok(Map.of("exists: ",exists));
     }
 }

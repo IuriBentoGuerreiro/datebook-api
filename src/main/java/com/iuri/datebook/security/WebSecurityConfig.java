@@ -41,6 +41,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST,"api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/auth/check-username").permitAll()
                         .anyRequest().authenticated()// Exige autenticação para todas as outras
                 )
                 .exceptionHandling(exceptions -> exceptions

@@ -47,4 +47,8 @@ public class UserService {
                 () -> new EntityNotFoundException("Usuário não encontrado.")
         );
     }
+
+    public boolean checkUsername(String username){
+        return userRepository.existsByUsername(username);
+    }
 }
