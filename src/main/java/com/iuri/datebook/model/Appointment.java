@@ -31,6 +31,10 @@ public class Appointment {
     @Column(name = "status")
     private Boolean status;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public static Appointment convert(AppointmentRequest appointmentRequest){
         return Appointment.builder()
                 .description(appointmentRequest.getDescription())
