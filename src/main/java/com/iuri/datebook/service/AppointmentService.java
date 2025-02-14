@@ -2,7 +2,6 @@ package com.iuri.datebook.service;
 
 import com.iuri.datebook.dto.AppointmentRequest;
 import com.iuri.datebook.dto.AppointmentResponse;
-import com.iuri.datebook.dto.UserResponse;
 import com.iuri.datebook.model.Appointment;
 import com.iuri.datebook.model.User;
 import com.iuri.datebook.repository.AppointmentRepository;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -58,10 +56,6 @@ public class AppointmentService {
         appointmentRepository.delete(appointment);
     }
 
-    public Page<Appointment> getCompletedAppointments(Pageable pageable){
-        return appointmentRepository.findByStatus(true, pageable);
-    }
-
     public AppointmentResponse markAsCompleted(Long id){
         var appointment = getById(id);
         appointment.setStatus(true);
@@ -70,8 +64,12 @@ public class AppointmentService {
         return AppointmentResponse.convert(appointment);
     }
 
-    public Page<Appointment> getPendingAppointments(Pageable pageable){
-        return appointmentRepository.findByStatus(false, pageable);
+    public Page<Appointment> getCompletedAppointments(String username, Pageable pageable){
+        return appointmentRepository.findByStatusAndUserUsername(true, pageable, username);
+    }
+
+    public Page<Appointment> getPendingAppointments(String username, Pageable pageable){
+        return appointmentRepository.findByStatusAndUserUsername(false, pageable, username);
     }
 
     public Page<Appointment> getAppointmentsUser (User user, Pageable pageable){

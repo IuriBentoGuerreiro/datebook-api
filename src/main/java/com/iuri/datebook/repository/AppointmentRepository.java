@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    Page<Appointment> findByStatus(boolean status, Pageable pageable);
+    Page<Appointment> findByStatusAndUserUsername(boolean status, Pageable pageable, String username);
 
     Page<Appointment> findByUser(User user, Pageable pageable);
 }

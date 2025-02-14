@@ -6,6 +6,7 @@ import com.iuri.datebook.model.Appointment;
 import com.iuri.datebook.model.User;
 import com.iuri.datebook.service.AppointmentService;
 import com.iuri.datebook.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("appointments")
 public class AppointmentController {
@@ -24,8 +26,8 @@ public class AppointmentController {
     private UserService userService;
 
     @PostMapping
-    public AppointmentResponse saveAppointment(@RequestBody AppointmentRequest appointmentRequest,
-                                               Authentication authentication){
+    public AppointmentResponse saveAppointment
+            (@RequestBody AppointmentRequest appointmentRequest, Authentication authentication){
         return appointmentService.saveAppointment(appointmentRequest, authentication);
     }
 
@@ -44,19 +46,23 @@ public class AppointmentController {
         appointmentService.delete(id);
     }
 
-    @GetMapping("/completed")
-    public Page<Appointment> getCompletedAppointments(Pageable pageable){
-        return appointmentService.getCompletedAppointments(pageable);
-    }
-
-    @GetMapping("/pending")
-    public Page<Appointment> getPendingAppointmens(Pageable pageable){
-        return appointmentService.getPendingAppointments(pageable);
-    }
-
     @PutMapping("/{id}/completed")
     public AppointmentResponse markAsCompleted(@PathVariable Long id){
         return appointmentService.markAsCompleted(id);
+    }
+
+    @GetMapping("/completed")
+    public ResponseEntity<Page<Appointment>> getCompletedAppointments(Pageable pageable, Authentication authentication){
+        String username = authentication.getName();
+        Page<Appointment> listCompleted = appointmentService.getCompletedAppointments(username, pageable);
+        return ResponseEntity.ok(listCompleted);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<Page<Appointment>> getPendingAppointmens(Pageable pageable, Authentication authentication){
+        String username = authentication.getName();
+        Page<Appointment> listPending = appointmentService.getPendingAppointments(username, pageable);
+        return ResponseEntity.ok(listPending);
     }
 
     @GetMapping
